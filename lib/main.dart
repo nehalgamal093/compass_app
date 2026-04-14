@@ -1,3 +1,4 @@
+import 'package:compass_app/core/resources/strings_manager.dart';
 import 'package:compass_app/home.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +11,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowMaterialGrid: false,
-      title: 'Compass',
+      debugShowCheckedModeBanner: false,
+      title: StringsManager.appName,
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),

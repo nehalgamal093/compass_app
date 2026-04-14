@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math' as maths;
+import 'package:compass_app/core/resources/images_manager.dart';
 import 'package:compass_app/listener.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     sensorValues = <double>[];
-
     _streamSubscription = eventData.listen((event){
       setState(() {
         sensorValues = <double>[event.x,event.y,event.z];
@@ -28,12 +28,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
     double angle = maths.atan2(sensorValues[1], sensorValues[0]);
     return Scaffold(
+      backgroundColor: Color(0xff07162b),
       body: Center(
-        child: Transform.rotate(
-           angle: maths.pi/2 - angle,
-            child: Image.asset("assets/compass.png",width: 500,)),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset(ImagesManager.compassCircleImg),
+            Transform.rotate(
+              angle: maths.pi/2 - angle,
+              child: ImageIcon(AssetImage(ImagesManager.needleImg),size: size.width*.8,color: Colors.white,),
+            )
+          ],
+        ),
       ),
     );
   }
