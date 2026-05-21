@@ -1,8 +1,13 @@
 import 'dart:async';
-import 'dart:math' as maths;
+import 'package:compass_app/core/features/home/widgets/custom_text.dart';
+import 'package:compass_app/core/features/home/widgets/results_widget.dart';
+import 'package:compass_app/core/resources/colors_manager.dart';
 import 'package:compass_app/core/resources/images_manager.dart';
-import 'package:compass_app/listener.dart';
+import 'package:compass_app/core/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as maths;
+import 'package:provider/provider.dart';
+import 'core/features/home/providers/compass_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,35 +17,58 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  StreamSubscription? _streamSubscription;
-  List<double> sensorValues = [];
   @override
   void initState() {
-    sensorValues = <double>[];
-    _streamSubscription = eventData.listen((event){
-      setState(() {
-        sensorValues = <double>[event.x,event.y,event.z];
-        print(sensorValues);
-      });
-    });
     super.initState();
+    Future.delayed(Duration.zero, () {
+      final myProvider = Provider.of<CompassProvider>(context, listen: false);
+      myProvider.streamValues();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final myProvider = Provider.of<CompassProvider>(context);
     Size size = MediaQuery.sizeOf(context);
-    double angle = maths.atan2(sensorValues[1], sensorValues[0]);
-    return Scaffold(
-      backgroundColor: Color(0xff07162b),
-      body: Center(
-        child: Stack(
-          alignment: Alignment.center,
+    double needleRotation = (myProvider.bearing + 180) * (maths.pi / 180);
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: ColorsManager.background,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: ColorsManager.blue,
+          centerTitle: true,
+          title: CustomText(title: StringsManager.appName, fontSize: 30),
+          elevation: 0,
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(ImagesManager.compassCircleImg),
-            Transform.rotate(
-              angle: maths.pi/2 - angle,
-              child: ImageIcon(AssetImage(ImagesManager.needleImg),size: size.width*.8,color: Colors.white,),
-            )
+            SizedBox(height: 50),
+            ResultsWidget(
+              bearing: myProvider.bearing,
+              direction: myProvider.direction,
+            ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Image.asset(ImagesManager.compassCircleImg),
+                Transform.rotate(
+                  angle: needleRotation,
+                  child: Image.asset(
+                    ImagesManager.needleImg,
+                    width: size.width * .8,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

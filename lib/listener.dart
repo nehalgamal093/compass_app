@@ -1,25 +1,26 @@
 import 'package:flutter/services.dart';
 
-const EventChannel CHANNEL = EventChannel("com.compass_app.event");
+const EventChannel eventChannel = EventChannel("com.compass_app.event");
 
-class EventChannelData{
+Stream<SensorEvent> get eventData {
+  return eventChannel.receiveBroadcastStream().map((event) {
+    if (event is double) {
+      return SensorEvent(x: 0.0, y: 0.0, z: event);
+    } else if (event is List) {
+      return SensorEvent(
+        x: event[0] as double,
+        y: event[1] as double,
+        z: event[2] as double,
+      );
+    }
+    return SensorEvent(x: 0.0, y: 0.0, z: 0.0);
+  });
+}
+
+class SensorEvent {
   final double x;
   final double y;
   final double z;
-  EventChannelData(this.x,this.y,this.z);
 
-  double getZ() => this.z;
-
-  @override
-  String toString() => "[EventChannelData (x: $x, y: $y, z: $z)]";
-
-}
-
-EventChannelData _listOfValues(List<double> data){
-  return EventChannelData(data[0], data[1], data[2]);
-}
-Stream<EventChannelData>? _magneticEvent;
-Stream <EventChannelData> get eventData{
-  _magneticEvent ??= CHANNEL.receiveBroadcastStream().map((event)=> _listOfValues(event.cast<double>()));
-  return _magneticEvent!;
+  SensorEvent({required this.x, required this.y, required this.z});
 }
