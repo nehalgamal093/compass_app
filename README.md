@@ -4,7 +4,7 @@ A Flutter Compass app built using Platform Channels to communicate with native A
 written in Kotlin and retrieve compass sensor data in real time.
 
 
-<img src="https://github.com/nehalgamal093/compass_app/blob/20f9d3ca28b27897ade717bc1ff9865641291779/screenshots/screenshot-1780932704056.png" width="500">
+<img src="https://github.com/nehalgamal093/compass_app/blob/e5326d401996728e8ef025fd36f84944c7cff57b/screenshots/screenshot-1780933476888.png" width="300">
 
 ## Tools & Technologies
 
