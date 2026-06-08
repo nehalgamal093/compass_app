@@ -1,16 +1,23 @@
-# compass_app
+# Compass
 
-A new Flutter project.
+A Flutter Compass app built using Platform Channels to communicate with native Android code
+written in Kotlin and retrieve compass sensor data in real time.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+[//]: # (<img src="https://github.com/nehalgamal093/ecommerce_quickmart/blob/985af72b5fbbada61fac1866ea1d33b414461cb8/screenshots/%231.png" width="300">)
 
-A few resources to get you started if this is your first Flutter project:
+## Tools & Technologies
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Platform Channels
+- Kotlin
+- Provider
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+
+- Accessing native Android sensors through Platform Channels.
+- Real-time compass heading updates.
+- Displaying the current direction (N, NE, E, etc.).
+- Displaying the current bearing in degrees.
+- Simple and responsive UI.
+
+
